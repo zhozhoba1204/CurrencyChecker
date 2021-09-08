@@ -1,0 +1,63 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.blinov'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+bootJar {
+   archiveName = 'alfa.jar'
+}
+
+task toJar (type: Jar) {
+
+	manifest {
+	    attributes 'Main-Class': 'com.blinov.alfa.AlfaApplication'
+	}
+
+	from {
+	    configurations.compile.collect { zipTree it }
+	}
+    with jar
+
+}
+
+
+task copyJars(type: Copy) {
+    from 'build/libs/alfa.jar'
+    into "/"
+}
+
+ext {
+	set('springCloudVersion', "2020.0.3")
+
+}
+
+dependencies {
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'junit:junit:4.12'
+
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
+
+build.dependsOn(copyJars)
