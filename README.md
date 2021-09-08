@@ -1,5 +1,7 @@
 # CurrencyChecker
 
+Запуск: java -jar alfa.jar
+
 Необходимо зайти на http://localhost:8080/main.html
 
 Коды валют:							
